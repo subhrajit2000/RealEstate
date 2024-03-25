@@ -11,10 +11,14 @@ def index(request):
         properties = Property.objects.filter(sale_type='For Rent').order_by('?')[:6]  # Retrieve random properties for rent
     else:
         properties = Property.objects.order_by('?')[:6]  # Default to featured properties
-    return render(request, "index.html", {'properties': properties})
+    realtors = Realtor.objects.all().order_by('name')  # Get all realtors sorted by name    
+    return render(request, "index.html", {'properties': properties, 'realtors': realtors})
 
 
-def realtor(request):
+def about(request):
     realtors = Realtor.objects.all().order_by('name')  # Get all realtors sorted by name
-    context = {'realtors': realtors}
-    return render(request, "index.html", context)
+    return render(request, "about.html", {'realtors': realtors})
+
+
+def contact(request):
+    pass
