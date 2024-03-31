@@ -126,7 +126,15 @@
         <h1>Login</h1>
         <form action="{% url 'login' %}" method="post">
             {% csrf_token %}
-
+            <hr>
+            {% if messages %}
+            {{ message.tags }}
+            <div class="alert alert-primary" role="alert">
+                {% for message in messages %}
+                {{ message }}
+                {% endfor %}
+            </div>
+            {% endif %}
             <input type="email" name="email" placeholder="Enter your email" required>
             <input type="password" name="password" placeholder="Enter the password" required>
             <button type="submit">Login</button>
@@ -134,11 +142,6 @@
         <div class="member">
             New member? <a href="{% url 'register' %}">Register Here</a>
         </div>
-    </div>
-    <div>
-        {% for message in messages %}
-        <h6>{{message}}</h6>
-        {% endfor %}
     </div>
     <!-- Register User Ends -->
 

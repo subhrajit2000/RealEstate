@@ -137,7 +137,15 @@
         <h1>Register</h1>
         <form action="{% url 'register' %}" method="post">
             {% csrf_token %}
-
+            <hr>
+            {% if messages %}
+            {{ message.tags }}
+            <div class="alert alert-primary" role="alert">
+                {% for message in messages %}
+                {{ message }}
+                {% endfor %}
+            </div>
+            {% endif %}
             <input type="text" name="name" placeholder="Enter your name" required>
             <input type="email" name="email" placeholder="Enter your email" required>
             <input type="tel" name="phone_number" placeholder="Enter your number" required>
@@ -153,13 +161,6 @@
             Already a member? <a href="{% url 'login' %}">Login Here</a>
         </div>
     </div>
-    <div>
-        {% for message in messages %}
-        <h6>{{message}}</h6>
-        {% endfor %}
-    </div>
-    <!-- Register User Ends -->
-
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">

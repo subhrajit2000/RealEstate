@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from Urbanacre.models import CustomUser
+from django.urls import reverse
 
 def register(request):
     if request.method == 'POST':
@@ -42,7 +43,7 @@ def register(request):
         return render(request, 'register.html')
     
 
-def login(request):
+def login_view(request):
     if request.method == 'POST':
         username = request.POST['email']
         password = request.POST['password']
@@ -51,7 +52,7 @@ def login(request):
 
         if user is not None:
             login(request, user)
-            return redirect("/")
+            return redirect("index")
         else:
             messages.error(request, 'Invalid Credentials')
             return redirect('login')
@@ -61,7 +62,8 @@ def login(request):
 
 
 
-def logout(request):
+def logout_view(request):
     logout(request)
+    messages.success(request, 'Successfully Logged Out!')
     return redirect('/')
   

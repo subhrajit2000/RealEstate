@@ -37,7 +37,7 @@ class PropertyAdmin(admin.ModelAdmin):
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'phone_number', 'subject', 'contact_date')
+    list_display = ('name', 'email', 'subject', 'contact_date')
     search_fields = ('name', 'email', 'subject')
     list_filter = ('contact_date',)
     ordering = ('-contact_date',)
