@@ -170,7 +170,7 @@
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Property</a>
                             <div class="dropdown-menu rounded-0 m-0">
                                 <a href="{% url 'property_list' %}" class="dropdown-item">Property List</a>
-                                <a href="property-type.html" class="dropdown-item">Add Property</a>
+                                <a href="{% url 'addproperty' %}" class="dropdown-item">Add Property</a>
                                 <a href="property-agent.html" class="dropdown-item">Property Agents</a>
                             </div>
                         </div>
@@ -183,7 +183,7 @@
                                 <i class="fa-solid fa-circle"></i>
                             </div>
                             <span>
-                                Subhrajit
+                                USER
                                 <i class="fa-solid fa-angle-down"></i>
                             </span>
                         </div>
@@ -228,6 +228,11 @@
         </div>
         <!-- Navbar End -->
 
+        {% for message in error_message %}
+        <div class="alert alert-success" role="alert">
+            {{message}}
+        </div>
+        {% endfor %}
 
         <!-- Header Start -->
         <div class="container-fluid header bg-white p-0">
@@ -464,7 +469,8 @@
                                     </div>
                                     <div class="p-4 pb-0">
                                         <h5 class="text-primary mb-3">{{property.price|floatformat:"2"}} Lacs</h5>
-                                        <a class="d-block h5 mb-2" href="">{{property.title}}</a>
+                                        <a class="d-block h5 mb-2"
+                                            href="{% url 'property_details' property.slug %}">{{property.title}}</a>
                                         <p><i class="fa fa-map-marker-alt text-primary me-2"></i>{{property.location}}
                                         </p>
                                     </div>
@@ -483,7 +489,8 @@
                             </div>
                             {% endfor %}
                             <div class="col-12 text-center wow fadeInUp" data-wow-delay="0.1s">
-                                <a class="btn btn-primary py-3 px-5" href="{% url 'property_list' %}">Browse More Property</a>
+                                <a class="btn btn-primary py-3 px-5" href="{% url 'property_list' %}">Browse More
+                                    Property</a>
                             </div>
                         </div>
                     </div>

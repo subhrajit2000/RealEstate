@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
+    <title>add property</title>
     <!-- Favicon -->
     <link href="{% static 'assets/img/favicon.ico' %}" rel="icon">
 
@@ -30,7 +30,7 @@
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
     <style>
         .wrapper {
-            width: 330px;
+            width: 500px;
             padding: 2rem 1rem;
             margin: 50px auto;
             background-color: #fff;
@@ -80,6 +80,17 @@
             border: 1px solid rgba(192, 192, 192);
         }
 
+        .terms input {
+            height: 1em;
+            width: 1em;
+            vertical-align: middle;
+            margin-top: 0.5rem;
+        }
+
+        .terms label {
+            font-size: 0.8rem;
+        }
+
         .member {
             font-size: 0.8rem;
             margin-top: 1.4rem;
@@ -108,12 +119,12 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Property</a>
                         <div class="dropdown-menu rounded-0 m-0">
-                            <a href="property-list.html" class="dropdown-item">Property List</a>
-                            <a href="property-type.html" class="dropdown-item">Add Property</a>
+                            <a href="{% url 'property_list' %}" class="dropdown-item">Property List</a>
+                            <a href="{% url 'addproperty' %}" class="dropdown-item">Add Property</a>
                             <a href="property-agent.html" class="dropdown-item">Property Agents</a>
                         </div>
                     </div>
-                    <a href="{% url 'contact' %}" class="nav-item nav-link">Contact</a>
+                    <a href="contact.html" class="nav-item nav-link">Contact</a>
                 </div>
                 <a href="accounts/register" class="btn btn-primary px-3 d-none d-lg-flex">Login/Register</a>
             </div>
@@ -123,28 +134,78 @@
 
     <!-- Register User starts -->
     <div class="wrapper">
-        <h1>Login</h1>
-        <form action="{% url 'login' %}" method="post">
+        <h1>List Your Property</h1>
+        <form action="{% url 'addproperty' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <hr>
-            {% if messages %}
-            {{ message.tags }}
-            <div class="alert alert-primary" role="alert">
-                {% for message in messages %}
-                {{ message }}
-                {% endfor %}
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title">
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description"></textarea>
+            <label for="society">Society:</label>
+            <textarea id="society" name="society"></textarea>
+            <label for="sale_type">Sale Type:</label>
+            <select id="sale_type" name="sale_type">
+                <option value="For Sale">For Sale</option>
+                <option value="For Rent">For Rent</option>
+            </select>
+            <label for="property_type">Property Type:</label>
+            <select id="property_type" name="property_type">
+                <option value="Residential">Residential</option>
+                <option value="Commercial">Commercial</option>
+            </select>
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price">
+            <label for="bedrooms">Bedrooms:</label>
+            <input type="number" id="bedrooms" name="bedrooms">
+            <label for="bathrooms">Bathrooms:</label>
+            <input type="number" id="bathrooms" name="bathrooms">
+            <label for="balcony">Balcony:</label>
+            <input type="number" id="balcony" name="balcony">
+            <label for="furnish_type">Furnish Type:</label>
+            <select id="furnish_type" name="furnish_type">
+                <option value="Furnished">Furnished</option>
+                <option value="Semifurnished">Semifurnished</option>
+                <option value="Unfurnished">Unfurnished</option>
+            </select>
+            <label for="carpet_area">Carpet Area:</label>
+            <input type="number" id="carpet_area" name="carpet_area">
+            <label for="floor_no">Floor No:</label>
+            <input type="text" id="floor_no" name="floor_no">
+            <label for="facing">Facing:</label>
+            <input type="text" id="facing" name="facing">
+            <label for="photo_main">Main Photo:</label>
+            <input type="file" id="photo_main" name="photo_main">
+            <label for="photo_1">Photo 1:</label>
+            <input type="file" id="photo_1" name="photo_1">
+            <label for="photo_2">Photo 2:</label>
+            <input type="file" id="photo_2" name="photo_2">
+            <label for="photo_3">Photo 3:</label>
+            <input type="file" id="photo_3" name="photo_3">
+            <label for="photo_4">Photo 4:</label>
+            <input type="file" id="photo_4" name="photo_4">
+            <label for="photo_5">Photo 5:</label>
+            <input type="file" id="photo_5" name="photo_5">
+            <label for="photo_6">Photo 6:</label>
+            <input type="file" id="photo_6" name="photo_6">
+            <label for="photo_7">Photo 7:</label>
+            <input type="file" id="photo_7" name="photo_7">
+            <label for="photo_8">Photo 8:</label><br>
+            <input type="file" id="photo_8" name="photo_8">
+            <label for="photo_9">Photo 9:</label>
+            <input type="file" id="photo_9" name="photo_9">
+            <label for="photo_10">Photo 10:</label>
+            <input type="file" id="photo_10" name="photo_10">
+            <div class="terms">
+                <label for="checkbox">Published:</label>
+                <input type="checkbox" id="checkbox" name="is_published" checked>
             </div>
-            {% endif %}
-            <input type="email" name="email" placeholder="Enter your email" required>
-            <input type="password" name="password" placeholder="Enter the password" required>
-            <button type="submit">Login</button>
+            <button type="submit">Add Property</button>
         </form>
-        <div class="member">
-            New member? <a href="{% url 'register' %}">Register Here</a>
-        </div>
-    </div>
-    <!-- Register User Ends -->
 
+    </div>
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
