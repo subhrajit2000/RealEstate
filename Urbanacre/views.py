@@ -1,7 +1,8 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
-from .models import Property, Realtor, Contact
+from django.contrib.auth.decorators import login_required
+from .forms import PropertyForm
+from .models import Property, Realtor, Contact, CustomUser
 from django.core.paginator import Paginator
 
 def index(request):
@@ -65,76 +66,29 @@ def property_details(request, slug):
         return render(request, 'property_details.html', {'property': property})
     
 
+@login_required
 def addproperty(request):
-    if not request.user.is_authenticated:
-        error_message = "You need to be logged in to access this functionality."
-        return render(request, 'add_property.html', {'error_message': error_message})
+    if request.method == 'POST':
+        form = PropertyForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Get the logged-in user
+            user = CustomUser.objects.get(pk=request.user.pk)
+
+            # Set the owner automatically to the logged-in user
+            form.instance.owner = user
+
+            # Generate a unique slug (consider using a slug generation library)
+            # This is an example using a basic approach (replace with a robust method)
+            base_slug = form.cleaned_data['title']
+            count = 1
+            slug = base_slug
+            while Property.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{count}"
+                count += 1
+            form.instance.slug = slug
+
+            form.save()
+            return redirect('property_list')
     else:
-        if request.method == 'POST':
-            realtor_id = request.POST.get('realtor_id')
-            owner_id = request.POST.get('owner_id')
-            slug = request.POST.get('slug')
-            title = request.POST.get('title')
-            location = request.POST.get('location')
-            description = request.POST.get('description')
-            society = request.POST.get('society')
-            sale_type = request.POST.get('sale_type')
-            property_type = request.POST.get('property_type')
-            price = request.POST.get('price')
-            bedrooms = request.POST.get('bedrooms')
-            bathrooms = request.POST.get('bathrooms')
-            balcony = request.POST.get('balcony')
-            furnish_type = request.POST.get('furnish_type')
-            carpet_area = request.POST.get('carpet_area')
-            floor_no = request.POST.get('floor_no')
-            facing = request.POST.get('facing')
-            photo_main = request.FILES.get('photo_main')
-            photo_1 = request.FILES.get('photo_1')
-            photo_2 = request.FILES.get('photo_2')
-            photo_3 = request.FILES.get('photo_3')
-            photo_4 = request.FILES.get('photo_4')
-            photo_5 = request.FILES.get('photo_5')
-            photo_6 = request.FILES.get('photo_6')
-            photo_7 = request.FILES.get('photo_7')
-            photo_8 = request.FILES.get('photo_8')
-            photo_9 = request.FILES.get('photo_9')
-            photo_10 = request.FILES.get('photo_10')
-            is_published = request.POST.get('is_published')
-
-            Property.objects.create(
-                realtor_id=realtor_id,
-                owner_id=owner_id,
-                slug=slug,
-                title=title,
-                location=location,
-                description=description,
-                society=society,
-                sale_type=sale_type,
-                property_type=property_type,
-                price=price,
-                bedrooms=bedrooms,
-                bathrooms=bathrooms,
-                balcony=balcony,
-                furnish_type=furnish_type,
-                carpet_area=carpet_area,
-                floor_no=floor_no,
-                facing=facing,
-                photo_main=photo_main,
-                photo_1=photo_1,
-                photo_2=photo_2,
-                photo_3=photo_3,
-                photo_4=photo_4,
-                photo_5=photo_5,
-                photo_6=photo_6,
-                photo_7=photo_7,
-                photo_8=photo_8,
-                photo_9=photo_9,
-                photo_10=photo_10,
-                is_published=is_published
-            )
-            messages.success(request, 'Property added successfully!')
-            return redirect('property_list')  # Redirect to a view displaying the list of properties
-
-        
-        return render(request, 'addproperty.html')
-    
+        form = PropertyForm()
+    return render(request, 'addproperty.html', {'form': form})
